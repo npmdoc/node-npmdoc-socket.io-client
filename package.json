@@ -1,17 +1,40 @@
 {
-    "buildNpmdoc":"socket.io-client",
+    "author": "kai zhu <kaizhu256@gmail.com>",
+    "buildNpmdoc": "socket.io-client",
+    "description": "api documentation for [socket.io-client (v1.7.3)](https://github.com/Automattic/socket.io-client#readme) [![npm package](https://img.shields.io/npm/v/npmdoc-socket.io-client.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-socket.io-client) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-socket.io-client.svg)](https://travis-ci.org/npmdoc/node-npmdoc-socket.io-client)",
     "devDependencies": {
-        "socket.io-client": "*",
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
+        "socket.io-client": "*",
         "utility2": "kaizhu256/node-utility2#alpha"
     },
-    "name":"npmdoc-socket.io-client",
+    "engines": {
+        "node": ">=4.0"
+    },
+    "homepage": "https://github.com/npmdoc/node-npmdoc-socket.io-client",
+    "keywords": [
+        "documentation",
+        "socket.io-client"
+    ],
+    "license": "MIT",
+    "main": "lib.npmdoc_socket.io_client.js",
+    "name": "npmdoc-socket.io-client",
+    "nameAlias": "npmdoc_socket_io_client",
+    "nameOriginal": "npmdoc-socket.io-client",
+    "os": [
+        "darwin",
+        "linux"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/npmdoc/node-npmdoc-socket.io-client.git"
     },
     "scripts": {
-        "build-ci": "utility2 shReadmeTest build_ci.sh"
+        "build-ci": "utility2 shReadmeTest build_ci.sh",
+        "env": "env",
+        "heroku-postbuild": "(set -e; npm install \"kaizhu256/node-utility2#alpha\"; utility2 shDeployHeroku)",
+        "postinstall": "if [ -f npm_scripts.sh ]; then ./npm_scripts.sh postinstall; fi",
+        "start": "(set -e; export PORT=${PORT:-8080}; utility2 start test.js)",
+        "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
     },
     "version": "0.0.1"
 }
