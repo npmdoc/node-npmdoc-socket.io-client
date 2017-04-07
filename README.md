@@ -3,9 +3,11 @@
 
 [![NPM](https://nodei.co/npm/socket.io-client.png?downloads=true)](https://www.npmjs.com/package/socket.io-client)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-socket.io-client/build/screen-capture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-socket.io-client_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-socket.io-client/build..beta..travis-ci.org/apidoc.html)
+[![apidoc](https://npmdoc.github.io/node-npmdoc-socket.io-client/build/screenCapture.buildNpmdoc.browser.%2Fhome%2Ftravis%2Fbuild%2Fnpmdoc%2Fnode-npmdoc-socket.io-client%2Ftmp%2Fbuild%2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-socket.io-client/build/apidoc.html)
 
-![package-listing](https://npmdoc.github.io/node-npmdoc-socket.io-client/build/screen-capture.npmPackageListing.svg)
+![npmPackageListing](https://npmdoc.github.io/node-npmdoc-socket.io-client/build/screenCapture.npmPackageListing.svg)
+
+![npmPackageDependencyTree](https://npmdoc.github.io/node-npmdoc-socket.io-client/build/screenCapture.npmPackageDependencyTree.svg)
 
 
 
