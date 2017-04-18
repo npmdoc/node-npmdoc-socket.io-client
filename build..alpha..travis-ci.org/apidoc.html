@@ -63,6 +63,15 @@
 
         <li>
 
+            <a class="apidocElementLiA" href="#apidoc.element.socket.io-client.io-client">
+            function <span class="apidocSignatureSpan">socket.</span>io-client
+            <span class="apidocSignatureSpan">(uri, opts)</span>
+            </a>
+
+        </li>
+
+        <li>
+
             <a class="apidocElementLiA" href="#apidoc.element.socket.io-client.Manager">
             function <span class="apidocSignatureSpan">socket.io-client.</span>Manager
             <span class="apidocSignatureSpan">(uri, opts)</span>
@@ -102,6 +111,24 @@
             <a class="apidocElementLiA" href="#apidoc.element.socket.io-client.io-client.Socket">
             function <span class="apidocSignatureSpan">socket.io-client.</span>io-client.Socket
             <span class="apidocSignatureSpan">(io, nsp, opts)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.socket.io-client.io-client.connect">
+            function <span class="apidocSignatureSpan">socket.io-client.</span>io-client.connect
+            <span class="apidocSignatureSpan">(uri, opts)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.socket.io-client.toString">
+            function <span class="apidocSignatureSpan">socket.io-client.</span>toString
+            <span class="apidocSignatureSpan">()</span>
             </a>
 
         </li>
@@ -751,10 +778,100 @@
 
     </ol></li>
 
+    <li class="apidocModuleLi"><a href="#apidoc.module.socket.io-client.connect">module socket.io-client.connect</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.socket.io-client.connect.connect">
+            function <span class="apidocSignatureSpan">socket.io-client.</span>connect
+            <span class="apidocSignatureSpan">(uri, opts)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.socket.io-client.connect.Manager">
+            function <span class="apidocSignatureSpan">socket.io-client.connect.</span>Manager
+            <span class="apidocSignatureSpan">(uri, opts)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.socket.io-client.connect.Socket">
+            function <span class="apidocSignatureSpan">socket.io-client.connect.</span>Socket
+            <span class="apidocSignatureSpan">(io, nsp, opts)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">number <span class="apidocSignatureSpan">socket.io-client.connect.</span>protocol</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">socket.io-client.connect.</span>managers</span>
+
+        </li>
+
+    </ol></li>
+
 </ol></div>
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.socket.io-client" id="apidoc.module.socket.io-client">module socket.io-client</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.socket.io-client.io-client" id="apidoc.element.socket.io-client.io-client">
+        function <span class="apidocSignatureSpan">socket.</span>io-client
+        <span class="apidocSignatureSpan">(uri, opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function lookup(uri, opts) {
+  if (typeof uri === &#x27;object&#x27;) {
+    opts = uri;
+    uri = undefined;
+  }
+
+  opts = opts || {};
+
+  var parsed = url(uri);
+  var source = parsed.source;
+  var id = parsed.id;
+  var path = parsed.path;
+  var sameNamespace = cache[id] &#x26;&#x26; path in cache[id].nsps;
+  var newConnection = opts.forceNew || opts[&#x27;force new connection&#x27;] ||
+                      false === opts.multiplex || sameNamespace;
+
+  var io;
+
+  if (newConnection) {
+    debug(&#x27;ignoring socket cache for %s&#x27;, source);
+    io = Manager(source, opts);
+  } else {
+    if (!cache[id]) {
+      debug(&#x27;new io instance for %s&#x27;, source);
+      cache[id] = Manager(source, opts);
+    }
+    io = cache[id];
+  }
+  if (parsed.query &#x26;&#x26; !opts.query) {
+    opts.query = parsed.query;
+  } else if (opts &#x26;&#x26; &#x27;object&#x27; === typeof opts.query) {
+    opts.query = encodeQueryString(opts.query);
+  }
+  return io.socket(parsed.path, opts);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 
     <h2>
@@ -944,6 +1061,68 @@
     this.query = opts.query;
   }
   if (this.io.autoConnect) this.open();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.socket.io-client.io-client.connect" id="apidoc.element.socket.io-client.io-client.connect">
+        function <span class="apidocSignatureSpan">socket.io-client.</span>io-client.connect
+        <span class="apidocSignatureSpan">(uri, opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function lookup(uri, opts) {
+  if (typeof uri === &#x27;object&#x27;) {
+    opts = uri;
+    uri = undefined;
+  }
+
+  opts = opts || {};
+
+  var parsed = url(uri);
+  var source = parsed.source;
+  var id = parsed.id;
+  var path = parsed.path;
+  var sameNamespace = cache[id] &#x26;&#x26; path in cache[id].nsps;
+  var newConnection = opts.forceNew || opts[&#x27;force new connection&#x27;] ||
+                      false === opts.multiplex || sameNamespace;
+
+  var io;
+
+  if (newConnection) {
+    debug(&#x27;ignoring socket cache for %s&#x27;, source);
+    io = Manager(source, opts);
+  } else {
+    if (!cache[id]) {
+      debug(&#x27;new io instance for %s&#x27;, source);
+      cache[id] = Manager(source, opts);
+    }
+    io = cache[id];
+  }
+  if (parsed.query &#x26;&#x26; !opts.query) {
+    opts.query = parsed.query;
+  } else if (opts &#x26;&#x26; &#x27;object&#x27; === typeof opts.query) {
+    opts.query = encodeQueryString(opts.query);
+  }
+  return io.socket(parsed.path, opts);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.socket.io-client.toString" id="apidoc.element.socket.io-client.toString">
+        function <span class="apidocSignatureSpan">socket.io-client.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return text;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -2846,6 +3025,135 @@ function on (obj, ev, fn) {
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.socket.io-client.connect" id="apidoc.module.socket.io-client.connect">module socket.io-client.connect</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.socket.io-client.connect.connect" id="apidoc.element.socket.io-client.connect.connect">
+        function <span class="apidocSignatureSpan">socket.io-client.</span>connect
+        <span class="apidocSignatureSpan">(uri, opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function lookup(uri, opts) {
+  if (typeof uri === &#x27;object&#x27;) {
+    opts = uri;
+    uri = undefined;
+  }
+
+  opts = opts || {};
+
+  var parsed = url(uri);
+  var source = parsed.source;
+  var id = parsed.id;
+  var path = parsed.path;
+  var sameNamespace = cache[id] &#x26;&#x26; path in cache[id].nsps;
+  var newConnection = opts.forceNew || opts[&#x27;force new connection&#x27;] ||
+                      false === opts.multiplex || sameNamespace;
+
+  var io;
+
+  if (newConnection) {
+    debug(&#x27;ignoring socket cache for %s&#x27;, source);
+    io = Manager(source, opts);
+  } else {
+    if (!cache[id]) {
+      debug(&#x27;new io instance for %s&#x27;, source);
+      cache[id] = Manager(source, opts);
+    }
+    io = cache[id];
+  }
+  if (parsed.query &#x26;&#x26; !opts.query) {
+    opts.query = parsed.query;
+  } else if (opts &#x26;&#x26; &#x27;object&#x27; === typeof opts.query) {
+    opts.query = encodeQueryString(opts.query);
+  }
+  return io.socket(parsed.path, opts);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.socket.io-client.connect.Manager" id="apidoc.element.socket.io-client.connect.Manager">
+        function <span class="apidocSignatureSpan">socket.io-client.connect.</span>Manager
+        <span class="apidocSignatureSpan">(uri, opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function Manager(uri, opts) {
+  if (!(this instanceof Manager)) return new Manager(uri, opts);
+  if (uri &#x26;&#x26; (&#x27;object&#x27; === typeof uri)) {
+    opts = uri;
+    uri = undefined;
+  }
+  opts = opts || {};
+
+  opts.path = opts.path || &#x27;/socket.io&#x27;;
+  this.nsps = {};
+  this.subs = [];
+  this.opts = opts;
+  this.reconnection(opts.reconnection !== false);
+  this.reconnectionAttempts(opts.reconnectionAttempts || Infinity);
+  this.reconnectionDelay(opts.reconnectionDelay || 1000);
+  this.reconnectionDelayMax(opts.reconnectionDelayMax || 5000);
+  this.randomizationFactor(opts.randomizationFactor || 0.5);
+  this.backoff = new Backoff({
+    min: this.reconnectionDelay(),
+    max: this.reconnectionDelayMax(),
+    jitter: this.randomizationFactor()
+  });
+  this.timeout(null == opts.timeout ? 20000 : opts.timeout);
+  this.readyState = &#x27;closed&#x27;;
+  this.uri = uri;
+  this.connecting = [];
+  this.lastPing = null;
+  this.encoding = false;
+  this.packetBuffer = [];
+  this.encoder = new parser.Encoder();
+  this.decoder = new parser.Decoder();
+  this.autoConnect = opts.autoConnect !== false;
+  if (this.autoConnect) this.open();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.socket.io-client.connect.Socket" id="apidoc.element.socket.io-client.connect.Socket">
+        function <span class="apidocSignatureSpan">socket.io-client.connect.</span>Socket
+        <span class="apidocSignatureSpan">(io, nsp, opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function Socket(io, nsp, opts) {
+  this.io = io;
+  this.nsp = nsp;
+  this.json = this; // compat
+  this.ids = 0;
+  this.acks = {};
+  this.receiveBuffer = [];
+  this.sendBuffer = [];
+  this.connected = false;
+  this.disconnected = true;
+  if (opts &#x26;&#x26; opts.query) {
+    this.query = opts.query;
+  }
+  if (this.io.autoConnect) this.open();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+
 
 
 </div>
