@@ -1,6 +1,6 @@
 # npmdoc-socket.io-client
 
-#### api documentation for  [socket.io-client (v1.7.3)](https://github.com/Automattic/socket.io-client#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-socket.io-client.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-socket.io-client) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-socket.io-client.svg)](https://travis-ci.org/npmdoc/node-npmdoc-socket.io-client)
+#### basic api documentation for  [socket.io-client (v1.7.3)](https://github.com/Automattic/socket.io-client#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-socket.io-client.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-socket.io-client) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-socket.io-client.svg)](https://travis-ci.org/npmdoc/node-npmdoc-socket.io-client)
 
 #### [![Build Status](https://secure.travis-ci.org/socketio/socket.io-client.svg?branch=master)](http://travis-ci.org/socketio/socket.io-client) [![Dependency Status](https://david-dm.org/socketio/socket.io-client.svg)](https://david-dm.org/socketio/socket.io-
 
@@ -121,7 +121,8 @@
     "scripts": {
         "test": "gulp test"
     },
-    "version": "1.7.3"
+    "version": "1.7.3",
+    "bin": {}
 }
 ```
 
