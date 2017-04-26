@@ -119,15 +119,6 @@
 
         <li>
 
-            <a class="apidocElementLiA" href="#apidoc.element.socket.io-client.toString">
-            function <span class="apidocSignatureSpan">socket.io-client.</span>toString
-            <span class="apidocSignatureSpan">()</span>
-            </a>
-
-        </li>
-
-        <li>
-
             <span class="apidocSignatureSpan">number <span class="apidocSignatureSpan">socket.io-client.</span>protocol</span>
 
         </li>
@@ -982,7 +973,22 @@
   }
   return io.socket(parsed.path, opts);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* test fixes on internet explorer
+* fixes for duplicate event propagation from manager instance [Rase-]
+
+1.0.5 / 2014-06-16
+==================
+
+* package: bump `engine.io-client` for better deps and smaller build
+* handle io.<span class="apidocCodeKeywordSpan">connect</span>(null, opts) correctly [audreyt]
+* url: fix incorrect ports in certain connections [holic]
+* manager: propagate all reconnection events to sockets [Rase-]
+* index: added BC for `force new connection`
+* socket: fix event buffering while in disconnected state [kevin-roark]
+* package: stop using tarballs in dependencies [reid]
+* manager: relay `connect_error` and `connect_timeout` to sockets
+...</pre></li>
     </ul>
 
 
@@ -1107,21 +1113,6 @@
 
 
 
-    <h2>
-        <a href="#apidoc.element.socket.io-client.toString" id="apidoc.element.socket.io-client.toString">
-        function <span class="apidocSignatureSpan">socket.io-client.</span>toString
-        <span class="apidocSignatureSpan">()</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">toString = function () {
-    return text;
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
-    </ul>
-
-
-
 
 
 
@@ -1199,7 +1190,23 @@
     .push(fn);
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	Request.requestsCount = 0;
+	Request.requests = {};
+
+	if (global.document) {
+	  if (global.attachEvent) {
+	    global.attachEvent('onunload', unloadHandler);
+	  } else if (global.addEventListener) {
+	    global.<span class="apidocCodeKeywordSpan">addEventListener</span>('beforeunload', unloadHandler, false);
+	  }
+	}
+
+	function unloadHandler () {
+	  for (var i in Request.requests) {
+	    if (Request.requests.hasOwnProperty(i)) {
+	      Request.requests[i].abort();
+...</pre></li>
     </ul>
 
 
@@ -1226,7 +1233,23 @@
 
   this.decoder.destroy();
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	    self.onopen();
+	    fn &amp;&amp; fn();
+	  });
+
+	  // emit `connect_error`
+	  var errorSub = on(socket, 'error', function (data) {
+	    debug('connect_error');
+	    self.<span class="apidocCodeKeywordSpan">cleanup</span>();
+	    self.readyState = 'closed';
+	    self.emitAll('connect_error', data);
+	    if (fn) {
+	      var err = new Error('Connection error');
+	      err.data = data;
+	      fn(err);
+	    } else {
+...</pre></li>
     </ul>
 
 
@@ -1251,7 +1274,23 @@
   this.readyState = 'closed';
   if (this.engine) this.engine.close();
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	    var timeout = this._timeout;
+	    debug('connect attempt will timeout after %d', timeout);
+
+	    // set timer
+	    var timer = setTimeout(function () {
+	      debug('connect attempt timed out after %d', timeout);
+	      openSub.destroy();
+	      socket.<span class="apidocCodeKeywordSpan">close</span>();
+	      socket.emit('error', 'timeout');
+	      self.emitAll('connect_timeout', timeout);
+	    }, timeout);
+
+	    this.subs.push({
+	      destroy: function destroy() {
+	        clearTimeout(timer);
+...</pre></li>
     </ul>
 
 
@@ -1322,7 +1361,22 @@
 
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* test fixes on internet explorer
+* fixes for duplicate event propagation from manager instance [Rase-]
+
+1.0.5 / 2014-06-16
+==================
+
+* package: bump `engine.io-client` for better deps and smaller build
+* handle io.<span class="apidocCodeKeywordSpan">connect</span>(null, opts) correctly [audreyt]
+* url: fix incorrect ports in certain connections [holic]
+* manager: propagate all reconnection events to sockets [Rase-]
+* index: added BC for `force new connection`
+* socket: fix event buffering while in disconnected state [kevin-roark]
+* package: stop using tarballs in dependencies [reid]
+* manager: relay `connect_error` and `connect_timeout` to sockets
+...</pre></li>
     </ul>
 
 
@@ -1341,7 +1395,23 @@
 
   this.close();
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  if (false !== this._timeout) {
+	    var timeout = this._timeout;
+	    debug('connect attempt will timeout after %d', timeout);
+
+	    // set timer
+	    var timer = setTimeout(function () {
+	      debug('connect attempt timed out after %d', timeout);
+	      openSub.<span class="apidocCodeKeywordSpan">destroy</span>();
+	      socket.close();
+	      socket.emit('error', 'timeout');
+	      self.emitAll('connect_timeout', timeout);
+	    }, timeout);
+
+	    this.subs.push({
+	      destroy: function destroy() {
+...</pre></li>
     </ul>
 
 
@@ -1428,7 +1498,23 @@ socket.compress(false).<span class="apidocCodeKeywordSpan">emit</span>('an event
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  });
+
+	  // emit `connect_error`
+	  var errorSub = on(socket, 'error', function (data) {
+	    debug('connect_error');
+	    self.cleanup();
+	    self.readyState = 'closed';
+	    self.<span class="apidocCodeKeywordSpan">emitAll</span>('connect_error', data);
+	    if (fn) {
+	      var err = new Error('Connection error');
+	      err.data = data;
+	      fn(err);
+	    } else {
+	      // Only do this if there is no fn to handle the error
+	      self.maybeReconnectOnOpen();
+...</pre></li>
     </ul>
 
 
@@ -1459,7 +1545,22 @@ socket.compress(false).<span class="apidocCodeKeywordSpan">emit</span>('an event
   this._callbacks = this._callbacks || {};
   return this._callbacks['$' + event] || [];
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 *
+	 * @param {String} event
+	 * @return {Boolean}
+	 * @api public
+	 */
+
+	Emitter.prototype.hasListeners = function(event){
+	  return !! this.<span class="apidocCodeKeywordSpan">listeners</span>(event).length;
+	};
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+...</pre></li>
     </ul>
 
 
@@ -1478,7 +1579,23 @@ socket.compress(false).<span class="apidocCodeKeywordSpan">emit</span>('an event
     this.reconnect();
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	    self.emitAll('connect_error', data);
+	    if (fn) {
+	      var err = new Error('Connection error');
+	      err.data = data;
+	      fn(err);
+	    } else {
+	      // Only do this if there is no fn to handle the error
+	      self.<span class="apidocCodeKeywordSpan">maybeReconnectOnOpen</span>();
+	    }
+	  });
+
+	  // emit `connect_timeout`
+	  if (false !== this._timeout) {
+	    var timeout = this._timeout;
+	    debug('connect attempt will timeout after %d', timeout);
+...</pre></li>
     </ul>
 
 
@@ -1520,7 +1637,23 @@ socket.compress(false).<span class="apidocCodeKeywordSpan">emit</span>('an event
   }
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 */
+
+	Emitter.prototype.once = function(event, fn){
+	  var self = this;
+	  this._callbacks = this._callbacks || {};
+
+	  function on() {
+	    self.<span class="apidocCodeKeywordSpan">off</span>(event, on);
+	    fn.apply(this, arguments);
+	  }
+
+	  on.fn = fn;
+	  this.on(event, on);
+	  return this;
+	};
+...</pre></li>
     </ul>
 
 
@@ -1575,7 +1708,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   this.on(event, on);
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	      var upgradeLosesBinary = !this.supportsBinary &amp;&amp; self.transport.supportsBinary;
+	      failed = failed || upgradeLosesBinary;
+	    }
+	    if (failed) return;
+
+	    debug('probe transport "%s" opened', name);
+	    transport.send([{ type: 'ping', data: 'probe' }]);
+	    transport.<span class="apidocCodeKeywordSpan">once</span>('packet', function (msg) {
+	      if (failed) return;
+	      if ('pong' === msg.type &amp;&amp; 'probe' === msg.data) {
+	        debug('probe transport "%s" pong', name);
+	        self.upgrading = true;
+	        self.emit('upgrading', transport);
+	        if (!transport) return;
+	        Socket.priorWebsocketSuccess = 'websocket' === transport.name;
+...</pre></li>
     </ul>
 
 
@@ -1599,7 +1748,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
     this.reconnect();
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 *
+	 * @api private
+	 */
+
+	Socket.prototype.ondisconnect = function () {
+	  debug('server disconnect (%s)', this.nsp);
+	  this.destroy();
+	  this.<span class="apidocCodeKeywordSpan">onclose</span>('io server disconnect');
+	};
+
+	/**
+	 * Called upon forced client/server side disconnections,
+	 * this method ensures the manager stops tracking us and
+	 * that reconnections don't get triggered for this.
+	 *
+...</pre></li>
     </ul>
 
 
@@ -1676,7 +1841,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   this.subs.push(on(socket, 'close', bind(this, 'onclose')));
   this.subs.push(on(this.decoder, 'decoded', bind(this, 'ondecoded')));
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  var socket = this.engine;
+	  var self = this;
+	  this.readyState = 'opening';
+	  this.skipReconnect = false;
+
+	  // emit `open`
+	  var openSub = on(socket, 'open', function () {
+	    self.<span class="apidocCodeKeywordSpan">onopen</span>();
+	    fn &amp;&amp; fn();
+	  });
+
+	  // emit `connect_error`
+	  var errorSub = on(socket, 'error', function (data) {
+	    debug('connect_error');
+	    self.cleanup();
+...</pre></li>
     </ul>
 
 
@@ -1726,7 +1907,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   this.updateSocketIds();
   this.emitAll('reconnect', attempt);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	        if (err) {
+	          debug('reconnect attempt error');
+	          self.reconnecting = false;
+	          self.reconnect();
+	          self.emitAll('reconnect_error', err.data);
+	        } else {
+	          debug('reconnect success');
+	          self.<span class="apidocCodeKeywordSpan">onreconnect</span>();
+	        }
+	      });
+	    }, delay);
+
+	    this.subs.push({
+	      destroy: function destroy() {
+	        clearTimeout(timer);
+...</pre></li>
     </ul>
 
 
@@ -1797,7 +1994,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
 
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  this.connecting = [];
+	  this.lastPing = null;
+	  this.encoding = false;
+	  this.packetBuffer = [];
+	  this.encoder = new parser.Encoder();
+	  this.decoder = new parser.Decoder();
+	  this.autoConnect = opts.autoConnect !== false;
+	  if (this.autoConnect) this.<span class="apidocCodeKeywordSpan">open</span>();
+	}
+
+	/**
+	 * Propagate given event to sockets and emit on `this`
+	 *
+	 * @api private
+	 */
+...</pre></li>
     </ul>
 
 
@@ -1828,7 +2041,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
     self.packetBuffer.push(packet);
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 *
+	 * @api private
+	 */
+
+	Manager.prototype.processPacketQueue = function () {
+	  if (this.packetBuffer.length &gt; 0 &amp;&amp; !this.encoding) {
+	    var pack = this.packetBuffer.shift();
+	    this.<span class="apidocCodeKeywordSpan">packet</span>(pack);
+	  }
+	};
+
+	/**
+	 * Clean up transport subscriptions and packet buffer.
+	 *
+	 * @api private
+...</pre></li>
     </ul>
 
 
@@ -1846,7 +2075,22 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
     this.packet(pack);
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	    // encode, then write to engine with result
+	    self.encoding = true;
+	    this.encoder.encode(packet, function (encodedPackets) {
+	      for (var i = 0; i &lt; encodedPackets.length; i++) {
+	        self.engine.write(encodedPackets[i], packet.options);
+	      }
+	      self.encoding = false;
+	      self.<span class="apidocCodeKeywordSpan">processPacketQueue</span>();
+	    });
+	  } else {
+	    // add packet to the queue
+	    self.packetBuffer.push(packet);
+	  }
+	};
+...</pre></li>
     </ul>
 
 
@@ -1864,7 +2108,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   this.backoff &amp;&amp; this.backoff.setJitter(v);
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  this.nsps = {};
+	  this.subs = [];
+	  this.opts = opts;
+	  this.reconnection(opts.reconnection !== false);
+	  this.reconnectionAttempts(opts.reconnectionAttempts || Infinity);
+	  this.reconnectionDelay(opts.reconnectionDelay || 1000);
+	  this.reconnectionDelayMax(opts.reconnectionDelayMax || 5000);
+	  this.<span class="apidocCodeKeywordSpan">randomizationFactor</span>(opts.randomizationFactor || 0.5);
+	  this.backoff = new Backoff({
+	    min: this.reconnectionDelay(),
+	    max: this.reconnectionDelayMax(),
+	    jitter: this.randomizationFactor()
+	  });
+	  this.timeout(null == opts.timeout ? 20000 : opts.timeout);
+	  this.readyState = 'closed';
+...</pre></li>
     </ul>
 
 
@@ -1921,7 +2181,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
     });
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 * @api private
+	 */
+
+	Manager.prototype.maybeReconnectOnOpen = function () {
+	  // Only try to reconnect if it's the first time we're connecting
+	  if (!this.reconnecting &amp;&amp; this._reconnection &amp;&amp; this.backoff.attempts === 0) {
+	    // keeps reconnection from firing twice for the same reconnection loop
+	    this.<span class="apidocCodeKeywordSpan">reconnect</span>();
+	  }
+	};
+
+	/**
+	 * Sets the current transport `socket`.
+	 *
+	 * @param {Function} optional, callback
+...</pre></li>
     </ul>
 
 
@@ -1938,7 +2214,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   this._reconnection = !!v;
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  }
+	  opts = opts || {};
+
+	  opts.path = opts.path || '/socket.io';
+	  this.nsps = {};
+	  this.subs = [];
+	  this.opts = opts;
+	  this.<span class="apidocCodeKeywordSpan">reconnection</span>(opts.reconnection !== false);
+	  this.reconnectionAttempts(opts.reconnectionAttempts || Infinity);
+	  this.reconnectionDelay(opts.reconnectionDelay || 1000);
+	  this.reconnectionDelayMax(opts.reconnectionDelayMax || 5000);
+	  this.randomizationFactor(opts.randomizationFactor || 0.5);
+	  this.backoff = new Backoff({
+	    min: this.reconnectionDelay(),
+	    max: this.reconnectionDelayMax(),
+...</pre></li>
     </ul>
 
 
@@ -1955,7 +2247,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   this._reconnectionAttempts = v;
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  opts = opts || {};
+
+	  opts.path = opts.path || '/socket.io';
+	  this.nsps = {};
+	  this.subs = [];
+	  this.opts = opts;
+	  this.reconnection(opts.reconnection !== false);
+	  this.<span class="apidocCodeKeywordSpan">reconnectionAttempts</span>(opts.reconnectionAttempts || Infinity);
+	  this.reconnectionDelay(opts.reconnectionDelay || 1000);
+	  this.reconnectionDelayMax(opts.reconnectionDelayMax || 5000);
+	  this.randomizationFactor(opts.randomizationFactor || 0.5);
+	  this.backoff = new Backoff({
+	    min: this.reconnectionDelay(),
+	    max: this.reconnectionDelayMax(),
+	    jitter: this.randomizationFactor()
+...</pre></li>
     </ul>
 
 
@@ -1973,7 +2281,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   this.backoff &amp;&amp; this.backoff.setMin(v);
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	  opts.path = opts.path || '/socket.io';
+	  this.nsps = {};
+	  this.subs = [];
+	  this.opts = opts;
+	  this.reconnection(opts.reconnection !== false);
+	  this.reconnectionAttempts(opts.reconnectionAttempts || Infinity);
+	  this.<span class="apidocCodeKeywordSpan">reconnectionDelay</span>(opts.reconnectionDelay || 1000);
+	  this.reconnectionDelayMax(opts.reconnectionDelayMax || 5000);
+	  this.randomizationFactor(opts.randomizationFactor || 0.5);
+	  this.backoff = new Backoff({
+	    min: this.reconnectionDelay(),
+	    max: this.reconnectionDelayMax(),
+	    jitter: this.randomizationFactor()
+	  });
+...</pre></li>
     </ul>
 
 
@@ -1991,7 +2315,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   this.backoff &amp;&amp; this.backoff.setMax(v);
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  opts.path = opts.path || '/socket.io';
+	  this.nsps = {};
+	  this.subs = [];
+	  this.opts = opts;
+	  this.reconnection(opts.reconnection !== false);
+	  this.reconnectionAttempts(opts.reconnectionAttempts || Infinity);
+	  this.reconnectionDelay(opts.reconnectionDelay || 1000);
+	  this.<span class="apidocCodeKeywordSpan">reconnectionDelayMax</span>(opts.reconnectionDelayMax || 5000);
+	  this.randomizationFactor(opts.randomizationFactor || 0.5);
+	  this.backoff = new Backoff({
+	    min: this.reconnectionDelay(),
+	    max: this.reconnectionDelayMax(),
+	    jitter: this.randomizationFactor()
+	  });
+	  this.timeout(null == opts.timeout ? 20000 : opts.timeout);
+...</pre></li>
     </ul>
 
 
@@ -2033,7 +2373,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   }
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	Socket.prototype.setTransport = function (transport) {
+	  debug('setting transport %s', transport.name);
+	  var self = this;
+
+	  if (this.transport) {
+	    debug('clearing existing transport %s', this.transport.name);
+	    this.transport.<span class="apidocCodeKeywordSpan">removeAllListeners</span>();
+	  }
+
+	  // set up transport
+	  this.transport = transport;
+
+	  // set up transport listeners
+	  transport
+...</pre></li>
     </ul>
 
 
@@ -2118,17 +2474,21 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   return this;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
- * @api public
- */
+	      debug('"%s" works - aborting "%s"', to.name, transport.name);
+	      freezeTransport();
+	    }
+	  }
 
-function on (obj, ev, fn) {
-  obj.on(ev, fn);
-  return {
-    destroy: function () {
-      obj.<span class="apidocCodeKeywordSpan">removeListener</span>(ev, fn);
-    }
-  };
-}
+	  // Remove all listeners on the transport and on self
+	  function cleanup () {
+	    transport.<span class="apidocCodeKeywordSpan">removeListener</span>('open', onTransportOpen);
+	    transport.removeListener('error', onerror);
+	    transport.removeListener('close', onTransportClose);
+	    self.removeListener('close', onclose);
+	    self.removeListener('upgrading', onupgrade);
+	  }
+
+	  transport.once('open', onTransportOpen);
 ...</pre></li>
     </ul>
 
@@ -2166,7 +2526,23 @@ function on (obj, ev, fn) {
 
   return socket;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	    io = cache[id];
+	  }
+	  if (parsed.query &amp;&amp; !opts.query) {
+	    opts.query = parsed.query;
+	  } else if (opts &amp;&amp; 'object' === _typeof(opts.query)) {
+	    opts.query = encodeQueryString(opts.query);
+	  }
+	  return io.<span class="apidocCodeKeywordSpan">socket</span>(parsed.path, opts);
+	}
+	/**
+	 *  Helper method to parse query objects to string.
+	 * @param {object} query
+	 * @returns {string}
+	 */
+	function encodeQueryString(obj) {
+...</pre></li>
     </ul>
 
 
@@ -2183,7 +2559,23 @@ function on (obj, ev, fn) {
   this._timeout = v;
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  this.reconnectionDelayMax(opts.reconnectionDelayMax || 5000);
+	  this.randomizationFactor(opts.randomizationFactor || 0.5);
+	  this.backoff = new Backoff({
+	    min: this.reconnectionDelay(),
+	    max: this.reconnectionDelayMax(),
+	    jitter: this.randomizationFactor()
+	  });
+	  this.<span class="apidocCodeKeywordSpan">timeout</span>(null == opts.timeout ? 20000 : opts.timeout);
+	  this.readyState = 'closed';
+	  this.uri = uri;
+	  this.connecting = [];
+	  this.lastPing = null;
+	  this.encoding = false;
+	  this.packetBuffer = [];
+	  this.encoder = new parser.Encoder();
+...</pre></li>
     </ul>
 
 
@@ -2202,7 +2594,22 @@ function on (obj, ev, fn) {
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 * @api private
+	 */
+
+	Manager.prototype.onreconnect = function () {
+	  var attempt = this.backoff.attempts;
+	  this.reconnecting = false;
+	  this.backoff.reset();
+	  this.<span class="apidocCodeKeywordSpan">updateSocketIds</span>();
+	  this.emitAll('reconnect', attempt);
+	};
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+...</pre></li>
     </ul>
 
 
@@ -2269,7 +2676,23 @@ function on (obj, ev, fn) {
     });
   };
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	Socket.prototype.onevent = function (packet) {
+	  var args = packet.data || [];
+	  debug('emitting event %j', args);
+
+	  if (null != packet.id) {
+	    debug('attaching ack callback to event');
+	    args.push(this.<span class="apidocCodeKeywordSpan">ack</span>(packet.id));
+	  }
+
+	  if (this.connected) {
+	    emit.apply(this, args);
+	  } else {
+	    this.receiveBuffer.push(args);
+	  }
+...</pre></li>
     </ul>
 
 
@@ -2287,7 +2710,23 @@ function on (obj, ev, fn) {
     .push(fn);
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	Request.requestsCount = 0;
+	Request.requests = {};
+
+	if (global.document) {
+	  if (global.attachEvent) {
+	    global.attachEvent('onunload', unloadHandler);
+	  } else if (global.addEventListener) {
+	    global.<span class="apidocCodeKeywordSpan">addEventListener</span>('beforeunload', unloadHandler, false);
+	  }
+	}
+
+	function unloadHandler () {
+	  for (var i in Request.requests) {
+	    if (Request.requests.hasOwnProperty(i)) {
+	      Request.requests[i].abort();
+...</pre></li>
     </ul>
 
 
@@ -2314,7 +2753,23 @@ function on (obj, ev, fn) {
   }
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	    var timeout = this._timeout;
+	    debug('connect attempt will timeout after %d', timeout);
+
+	    // set timer
+	    var timer = setTimeout(function () {
+	      debug('connect attempt timed out after %d', timeout);
+	      openSub.destroy();
+	      socket.<span class="apidocCodeKeywordSpan">close</span>();
+	      socket.emit('error', 'timeout');
+	      self.emitAll('connect_timeout', timeout);
+	    }, timeout);
+
+	    this.subs.push({
+	      destroy: function destroy() {
+	        clearTimeout(timer);
+...</pre></li>
     </ul>
 
 
@@ -2368,7 +2823,22 @@ socket.<span class="apidocCodeKeywordSpan">compress</span>(false).emit('an event
   this.emit('connecting');
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* test fixes on internet explorer
+* fixes for duplicate event propagation from manager instance [Rase-]
+
+1.0.5 / 2014-06-16
+==================
+
+* package: bump `engine.io-client` for better deps and smaller build
+* handle io.<span class="apidocCodeKeywordSpan">connect</span>(null, opts) correctly [audreyt]
+* url: fix incorrect ports in certain connections [holic]
+* manager: propagate all reconnection events to sockets [Rase-]
+* index: added BC for `force new connection`
+* socket: fix event buffering while in disconnected state [kevin-roark]
+* package: stop using tarballs in dependencies [reid]
+* manager: relay `connect_error` and `connect_timeout` to sockets
+...</pre></li>
     </ul>
 
 
@@ -2391,7 +2861,23 @@ socket.<span class="apidocCodeKeywordSpan">compress</span>(false).emit('an event
 
   this.io.destroy(this);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  if (false !== this._timeout) {
+	    var timeout = this._timeout;
+	    debug('connect attempt will timeout after %d', timeout);
+
+	    // set timer
+	    var timer = setTimeout(function () {
+	      debug('connect attempt timed out after %d', timeout);
+	      openSub.<span class="apidocCodeKeywordSpan">destroy</span>();
+	      socket.close();
+	      socket.emit('error', 'timeout');
+	      self.emitAll('connect_timeout', timeout);
+	    }, timeout);
+
+	    this.subs.push({
+	      destroy: function destroy() {
+...</pre></li>
     </ul>
 
 
@@ -2501,7 +2987,23 @@ socket.compress(false).<span class="apidocCodeKeywordSpan">emit</span>('an event
   }
   this.sendBuffer = [];
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 * @api private
+	 */
+
+	Socket.prototype.onconnect = function () {
+	  this.connected = true;
+	  this.disconnected = false;
+	  this.emit('connect');
+	  this.<span class="apidocCodeKeywordSpan">emitBuffered</span>();
+	};
+
+	/**
+	 * Emit buffered events (received and emitted).
+	 *
+	 * @api private
+	 */
+...</pre></li>
     </ul>
 
 
@@ -2532,7 +3034,22 @@ socket.compress(false).<span class="apidocCodeKeywordSpan">emit</span>('an event
   this._callbacks = this._callbacks || {};
   return this._callbacks['$' + event] || [];
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 *
+	 * @param {String} event
+	 * @return {Boolean}
+	 * @api public
+	 */
+
+	Emitter.prototype.hasListeners = function(event){
+	  return !! this.<span class="apidocCodeKeywordSpan">listeners</span>(event).length;
+	};
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+...</pre></li>
     </ul>
 
 
@@ -2574,7 +3091,23 @@ socket.compress(false).<span class="apidocCodeKeywordSpan">emit</span>('an event
   }
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 */
+
+	Emitter.prototype.once = function(event, fn){
+	  var self = this;
+	  this._callbacks = this._callbacks || {};
+
+	  function on() {
+	    self.<span class="apidocCodeKeywordSpan">off</span>(event, on);
+	    fn.apply(this, arguments);
+	  }
+
+	  on.fn = fn;
+	  this.on(event, on);
+	  return this;
+	};
+...</pre></li>
     </ul>
 
 
@@ -2629,7 +3162,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
     debug('bad ack %s', packet.id);
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	      break;
+
+	    case parser.BINARY_EVENT:
+	      this.onevent(packet);
+	      break;
+
+	    case parser.ACK:
+	      this.<span class="apidocCodeKeywordSpan">onack</span>(packet);
+	      break;
+
+	    case parser.BINARY_ACK:
+	      this.onack(packet);
+	      break;
+
+	    case parser.DISCONNECT:
+...</pre></li>
     </ul>
 
 
@@ -2651,7 +3200,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   this.on(event, on);
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	      var upgradeLosesBinary = !this.supportsBinary &amp;&amp; self.transport.supportsBinary;
+	      failed = failed || upgradeLosesBinary;
+	    }
+	    if (failed) return;
+
+	    debug('probe transport "%s" opened', name);
+	    transport.send([{ type: 'ping', data: 'probe' }]);
+	    transport.<span class="apidocCodeKeywordSpan">once</span>('packet', function (msg) {
+	      if (failed) return;
+	      if ('pong' === msg.type &amp;&amp; 'probe' === msg.data) {
+	        debug('probe transport "%s" pong', name);
+	        self.upgrading = true;
+	        self.emit('upgrading', transport);
+	        if (!transport) return;
+	        Socket.priorWebsocketSuccess = 'websocket' === transport.name;
+...</pre></li>
     </ul>
 
 
@@ -2670,7 +3235,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   delete this.id;
   this.emit('disconnect', reason);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 *
+	 * @api private
+	 */
+
+	Socket.prototype.ondisconnect = function () {
+	  debug('server disconnect (%s)', this.nsp);
+	  this.destroy();
+	  this.<span class="apidocCodeKeywordSpan">onclose</span>('io server disconnect');
+	};
+
+	/**
+	 * Called upon forced client/server side disconnections,
+	 * this method ensures the manager stops tracking us and
+	 * that reconnections don't get triggered for this.
+	 *
+...</pre></li>
     </ul>
 
 
@@ -2688,7 +3269,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   this.emit('connect');
   this.emitBuffered();
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 */
+
+	Socket.prototype.onpacket = function (packet) {
+	  if (packet.nsp !== this.nsp) return;
+
+	  switch (packet.type) {
+	    case parser.CONNECT:
+	      this.<span class="apidocCodeKeywordSpan">onconnect</span>();
+	      break;
+
+	    case parser.EVENT:
+	      this.onevent(packet);
+	      break;
+
+	    case parser.BINARY_EVENT:
+...</pre></li>
     </ul>
 
 
@@ -2705,7 +3302,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   this.destroy();
   this.onclose('io server disconnect');
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	      break;
+
+	    case parser.BINARY_ACK:
+	      this.onack(packet);
+	      break;
+
+	    case parser.DISCONNECT:
+	      this.<span class="apidocCodeKeywordSpan">ondisconnect</span>();
+	      break;
+
+	    case parser.ERROR:
+	      this.emit('error', packet.data);
+	      break;
+	  }
+	};
+...</pre></li>
     </ul>
 
 
@@ -2732,7 +3345,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
     this.receiveBuffer.push(args);
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	  switch (packet.type) {
+	    case parser.CONNECT:
+	      this.onconnect();
+	      break;
+
+	    case parser.EVENT:
+	      this.<span class="apidocCodeKeywordSpan">onevent</span>(packet);
+	      break;
+
+	    case parser.BINARY_EVENT:
+	      this.onevent(packet);
+	      break;
+
+	    case parser.ACK:
+...</pre></li>
     </ul>
 
 
@@ -2756,7 +3385,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  var socket = this.engine;
+	  var self = this;
+	  this.readyState = 'opening';
+	  this.skipReconnect = false;
+
+	  // emit `open`
+	  var openSub = on(socket, 'open', function () {
+	    self.<span class="apidocCodeKeywordSpan">onopen</span>();
+	    fn &amp;&amp; fn();
+	  });
+
+	  // emit `connect_error`
+	  var errorSub = on(socket, 'error', function (data) {
+	    debug('connect_error');
+	    self.cleanup();
+...</pre></li>
     </ul>
 
 
@@ -2822,7 +3467,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   this.emit('connecting');
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  this.connecting = [];
+	  this.lastPing = null;
+	  this.encoding = false;
+	  this.packetBuffer = [];
+	  this.encoder = new parser.Encoder();
+	  this.decoder = new parser.Decoder();
+	  this.autoConnect = opts.autoConnect !== false;
+	  if (this.autoConnect) this.<span class="apidocCodeKeywordSpan">open</span>();
+	}
+
+	/**
+	 * Propagate given event to sockets and emit on `this`
+	 *
+	 * @api private
+	 */
+...</pre></li>
     </ul>
 
 
@@ -2838,7 +3499,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   packet.nsp = this.nsp;
   this.io.packet(packet);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 *
+	 * @api private
+	 */
+
+	Manager.prototype.processPacketQueue = function () {
+	  if (this.packetBuffer.length &gt; 0 &amp;&amp; !this.encoding) {
+	    var pack = this.packetBuffer.shift();
+	    this.<span class="apidocCodeKeywordSpan">packet</span>(pack);
+	  }
+	};
+
+	/**
+	 * Clean up transport subscriptions and packet buffer.
+	 *
+	 * @api private
+...</pre></li>
     </ul>
 
 
@@ -2880,7 +3557,23 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   }
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	Socket.prototype.setTransport = function (transport) {
+	  debug('setting transport %s', transport.name);
+	  var self = this;
+
+	  if (this.transport) {
+	    debug('clearing existing transport %s', this.transport.name);
+	    this.transport.<span class="apidocCodeKeywordSpan">removeAllListeners</span>();
+	  }
+
+	  // set up transport
+	  this.transport = transport;
+
+	  // set up transport listeners
+	  transport
+...</pre></li>
     </ul>
 
 
@@ -2965,17 +3658,21 @@ Socket.IO is compatible with [browserify](http://browserify.org/).
   return this;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
- * @api public
- */
+	      debug('"%s" works - aborting "%s"', to.name, transport.name);
+	      freezeTransport();
+	    }
+	  }
 
-function on (obj, ev, fn) {
-  obj.on(ev, fn);
-  return {
-    destroy: function () {
-      obj.<span class="apidocCodeKeywordSpan">removeListener</span>(ev, fn);
-    }
-  };
-}
+	  // Remove all listeners on the transport and on self
+	  function cleanup () {
+	    transport.<span class="apidocCodeKeywordSpan">removeListener</span>('open', onTransportOpen);
+	    transport.removeListener('error', onerror);
+	    transport.removeListener('close', onTransportClose);
+	    self.removeListener('close', onclose);
+	    self.removeListener('upgrading', onupgrade);
+	  }
+
+	  transport.once('open', onTransportOpen);
 ...</pre></li>
     </ul>
 
@@ -2994,7 +3691,23 @@ function on (obj, ev, fn) {
   this.emit.apply(this, args);
   return this;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	    if (self.onlyBinaryUpgrades) {
+	      var upgradeLosesBinary = !this.supportsBinary &amp;&amp; self.transport.supportsBinary;
+	      failed = failed || upgradeLosesBinary;
+	    }
+	    if (failed) return;
+
+	    debug('probe transport "%s" opened', name);
+	    transport.<span class="apidocCodeKeywordSpan">send</span>([{ type: 'ping', data: 'probe' }]);
+	    transport.once('packet', function (msg) {
+	      if (failed) return;
+	      if ('pong' === msg.type &amp;&amp; 'probe' === msg.data) {
+	        debug('probe transport "%s" pong', name);
+	        self.upgrading = true;
+	        self.emit('upgrading', transport);
+	        if (!transport) return;
+...</pre></li>
     </ul>
 
 
@@ -3016,7 +3729,23 @@ function on (obj, ev, fn) {
     on(io, 'close', bind(this, 'onclose'))
   ];
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	 *
+	 * @api public
+	 */
+
+	Socket.prototype.open = Socket.prototype.connect = function () {
+	  if (this.connected) return this;
+
+	  this.<span class="apidocCodeKeywordSpan">subEvents</span>();
+	  this.io.open(); // ensure open
+	  if ('open' === this.io.readyState) this.onopen();
+	  this.emit('connecting');
+	  return this;
+	};
+
+	/**
+...</pre></li>
     </ul>
 
 
@@ -3068,7 +3797,22 @@ function on (obj, ev, fn) {
   }
   return io.socket(parsed.path, opts);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* test fixes on internet explorer
+* fixes for duplicate event propagation from manager instance [Rase-]
+
+1.0.5 / 2014-06-16
+==================
+
+* package: bump `engine.io-client` for better deps and smaller build
+* handle io.<span class="apidocCodeKeywordSpan">connect</span>(null, opts) correctly [audreyt]
+* url: fix incorrect ports in certain connections [holic]
+* manager: propagate all reconnection events to sockets [Rase-]
+* index: added BC for `force new connection`
+* socket: fix event buffering while in disconnected state [kevin-roark]
+* package: stop using tarballs in dependencies [reid]
+* manager: relay `connect_error` and `connect_timeout` to sockets
+...</pre></li>
     </ul>
 
 
